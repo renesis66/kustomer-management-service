@@ -1,0 +1,23 @@
+# src/main/resources/application.yml
+micronaut:
+  application:
+    name: kustomer-management-service
+  server:
+    cors:
+      enabled: true
+      configurations:
+        web:
+          allowedOrigins:
+            - http://localhost:3000
+          allowedMethods:
+            - POST
+            - PUT
+            - GET
+            - DELETE
+            - OPTIONS
+    port: 8080
+    context-path: /api
+
+dynamodb:
+  table:
+    name: Customers

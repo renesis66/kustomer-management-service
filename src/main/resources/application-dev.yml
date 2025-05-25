@@ -1,0 +1,7 @@
+# src/main/resources/application-dev.yml
+dynamodb:
+  local: true
+  endpoint: http://localhost:8000
+  region: local
+  access-key-id: dummy
+  secret-access-key: dummy
