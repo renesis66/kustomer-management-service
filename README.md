@@ -26,3 +26,73 @@
 - [https://kotlinlang.org/docs/ksp-overview.html](https://kotlinlang.org/docs/ksp-overview.html)
 
 
+
+NOTES
+## Create DynamoDB Table
+
+Run the following AWS CLI command to create the `Customers` table in your local DynamoDB:
+```shell
+aws dynamodb create-table \
+  --table-name Customers \
+  --attribute-definitions AttributeName=id,AttributeType=S \
+  --key-schema AttributeName=id,KeyType=HASH \
+  --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 \
+  --endpoint-url http://localhost:8000 \
+  --region us-east-1
+```
+
+## Verify DynamoDB Table
+
+After creating the table, you can verify it exists with the AWS CLI:
+```shell
+aws dynamodb list-tables \
+  --endpoint-url http://localhost:8000 \
+  --region us-east-1
+```
+
+To view the details of the `Customers` table:
+```shell
+aws dynamodb describe-table \
+  --table-name Customers \
+  --endpoint-url http://localhost:8000 \
+  --region us-east-1
+```
+
+# Run with Docker
+
+# 1. Create the Docker network
+```shell
+docker network create kms-net
+```
+
+# 2. Start DynamoDB Local
+```shell
+docker run -d --name dynamodb-local \
+  --network kms-net \
+  -p 8000:8000 \
+  amazon/dynamodb-local
+```
+
+# 3. Build the Docker image
+```shell
+./gradlew clean buildDockerImage
+```
+
+# 4. Run the Micronaut service
+```shell
+docker run --rm \
+  --network kms-net \
+  -e AWS_REGION=us-east-1 \
+  -e AWS_ACCESS_KEY_ID=dummy \
+  -e AWS_SECRET_ACCESS_KEY=dummy \
+  -e DYNAMODB_ENDPOINT=http://dynamodb-local:8000 \
+  -p 8080:8080 \
+  com.dierbeck.kms/kustomer-management-service:0.1
+```
+
+# Verify
+Open http://localhost:8080/api/customers in your browser or:
+```shell
+curl http://localhost:8080/api/customers
+```
+

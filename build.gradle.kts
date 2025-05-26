@@ -1,3 +1,5 @@
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+
 val kotlinVersion = project.properties["kotlinVersion"]
 val micronautVersion = project.properties["micronautVersion"]
 
@@ -8,6 +10,12 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("io.micronaut.application") version "4.0.4"
     id("io.micronaut.aot") version "4.0.4"
+    id("com.bmuschko.docker-remote-api") version "9.4.0"
+}
+
+// Configure Docker daemon socket for com.bmuschko.docker-remote-api (Rancher Desktop)
+docker {
+    url.set("unix:///Users/scottdierbeck/.rd/docker.sock")
 }
 
 version = "0.1"
@@ -84,4 +92,16 @@ micronaut {
         deduceEnvironment.set(true)
         optimizeNetty.set(true)
     }
+}
+
+// Define a standalone task to build the Docker image
+tasks.register<DockerBuildImage>("buildDockerImage") {
+    description = "Builds Docker image using the root Dockerfile"
+    group = "docker"
+    dependsOn("shadowJar")
+    // Use project root as Docker context
+    inputDir.set(project.projectDir)
+    // Specify the Dockerfile at project root
+    dockerFile.set(project.projectDir.resolve("Dockerfile"))
+    images.add("${project.group}/${project.name}:${project.version}")
 }

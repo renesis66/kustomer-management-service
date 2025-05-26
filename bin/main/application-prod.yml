@@ -1,0 +1,6 @@
+# src/main/resources/application-prod.yml
+dynamodb:
+  local: false
+  region: ${AWS_REGION:us-west-2}
+  access-key-id: ${AWS_ACCESS_KEY_ID}
+  secret-access-key: ${AWS_SECRET_ACCESS_KEY}
