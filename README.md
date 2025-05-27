@@ -58,34 +58,27 @@ aws dynamodb describe-table \
   --region us-east-1
 ```
 
-# Run with Docker
+## Run with Docker
 
-# 1. Create the Docker network
-```shell
-docker network create kms-net
-```
-
-# 2. Start DynamoDB Local
+1. Start DynamoDB Local
 ```shell
 docker run -d --name dynamodb-local \
-  --network kms-net \
   -p 8000:8000 \
   amazon/dynamodb-local
 ```
 
-# 3. Build the Docker image
+2. Build the Docker image
 ```shell
 ./gradlew clean buildDockerImage
 ```
 
-# 4. Run the Micronaut service
+3. Run the Micronaut service
 ```shell
 docker run --rm \
-  --network kms-net \
   -e AWS_REGION=us-east-1 \
   -e AWS_ACCESS_KEY_ID=dummy \
   -e AWS_SECRET_ACCESS_KEY=dummy \
-  -e DYNAMODB_ENDPOINT=http://dynamodb-local:8000 \
+  -e DYNAMODB_ENDPOINT=http://host.docker.internal:8000 \
   -p 8080:8080 \
   com.dierbeck.kms/kustomer-management-service:0.1
 ```
