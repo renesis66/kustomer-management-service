@@ -94,6 +94,19 @@ micronaut {
     }
 }
 
+// Configure Java 21 toolchain and set Kotlin JVM target to 21
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        jvmTarget = "21"
+    }
+}
+
 // Define a standalone task to build the Docker image
 tasks.register<DockerBuildImage>("buildDockerImage") {
     description = "Builds Docker image using the root Dockerfile"
