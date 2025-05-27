@@ -90,7 +90,7 @@ docker run --rm \
   com.dierbeck.kms/kustomer-management-service:0.1
 ```
 
-# Create a Customer
+## Create a Customer
 ```shell
 curl -X POST http://localhost:8080/api/customers \
   -H "Content-Type: application/json" \
