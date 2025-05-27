@@ -103,11 +103,6 @@ curl -X POST http://localhost:8080/api/customers \
   }'
 ```
 
-# Verify New Entry
-```shell
-curl http://localhost:8080/api/customers
-```
-
 # Verify
 Open http://localhost:8080/api/customers in your browser or:
 ```shell
