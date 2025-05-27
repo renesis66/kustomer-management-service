@@ -90,6 +90,24 @@ docker run --rm \
   com.dierbeck.kms/kustomer-management-service:0.1
 ```
 
+# Create a Customer
+```shell
+curl -X POST http://localhost:8080/api/customers \
+  -H "Content-Type: application/json" \
+  -d '{
+    "firstName": "Jane",
+    "lastName": "Doe",
+    "email": "jane.doe@example.com",
+    "phone": "555-1234",
+    "address": "123 Main St"
+  }'
+```
+
+# Verify New Entry
+```shell
+curl http://localhost:8080/api/customers
+```
+
 # Verify
 Open http://localhost:8080/api/customers in your browser or:
 ```shell
