@@ -1,12 +1,9 @@
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 
-val kotlinVersion = project.properties["kotlinVersion"]
-val micronautVersion = project.properties["micronautVersion"]
-
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.8.22"
-    id("org.jetbrains.kotlin.plugin.allopen") version "1.8.22"
-    id("com.google.devtools.ksp") version "1.8.22-1.0.11"
+    id("org.jetbrains.kotlin.jvm") version "1.9.21"
+    id("org.jetbrains.kotlin.plugin.allopen") version "1.9.21"
+    id("com.google.devtools.ksp") version "1.9.21-1.0.16"
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("io.micronaut.application") version "4.0.4"
     id("io.micronaut.aot") version "4.0.4"
@@ -28,10 +25,11 @@ repositories {
 dependencies {
     ksp("io.micronaut:micronaut-http-validation")
     ksp("io.micronaut.serde:micronaut-serde-processor")
+    ksp("io.micronaut:micronaut-inject-java")
     implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
     implementation("io.micronaut.serde:micronaut-serde-jackson")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.8.22")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.21")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.21")
     implementation("software.amazon.awssdk:dynamodb:2.20.68")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.7.3")
@@ -60,7 +58,6 @@ dependencies {
     testImplementation("org.testcontainers:testcontainers:1.19.1")
     testImplementation("org.testcontainers:junit-jupiter:1.19.1")
     testImplementation("io.micronaut.test:micronaut-test-kotest5")
-    ksp("io.micronaut:micronaut-inject-java")  // This will handle both main and test sources
 }
 
 application {
@@ -94,11 +91,10 @@ micronaut {
     }
 }
 
-// Configure Java 21 toolchain and set Kotlin JVM target to 21
+// Set Java 21 compatibility
 java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(21))
-    }
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
